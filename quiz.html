@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Kuis Pengetahuan Umum</title>
+  <style>
+    body { background:#1a1a1a; color:white; font-family:Arial; text-align:center; }
+    .question { font-size:20px; margin:20px; }
+    button { margin:10px; padding:8px 12px; cursor:pointer; }
+  </style>
+</head>
+<body>
+  <h1>Kuis Pengetahuan Umum</h1>
+  <div id="quiz"></div>
+  <button id="nextBtn">Berikutnya</button>
+  <p id="result"></p>
+
+  <script>
+    const quizData = [
+      { q: "Ibukota Indonesia adalah?", a: ["Jakarta", "Bandung", "Surabaya", "Medan"], correct: 0 },
+      { q: "Planet terbesar di tata surya?", a: ["Mars", "Bumi", "Jupiter", "Saturnus"], correct: 2 },
+      { q: "Gunung tertinggi di dunia?", a: ["Fuji", "Everest", "Kilimanjaro", "Elbrus"], correct: 1 },
+      { q: "Lambang kimia air?", a: ["O2", "H2", "CO2", "H2O"], correct: 3 },
+      { q: "Jumlah provinsi di Indonesia (2024)?", a: ["34", "37", "38", "39"], correct: 2 }
+    ];
+
+    let index = 0, score = 0;
+    const quiz = document.getElementById('quiz');
+    const nextBtn = document.getElementById('nextBtn');
+    const result = document.getElementById('result');
+
+    function showQuestion() {
+      const q = quizData[index];
+      quiz.innerHTML = `<div class='question'>${q.q}</div>` +
+        q.a.map((opt, i) =>
+          `<button onclick="checkAnswer(${i})">${opt}</button>`).join('');
+    }
+
+    function checkAnswer(i) {
+      if (i === quizData[index].correct) score++;
+      index++;
+      if (index < quizData.length) showQuestion();
+      else endQuiz();
+    }
+
+    function endQuiz() {
+      quiz.innerHTML = '';
+      result.textContent = `Skor akhir kamu: ${score}/${quizData.length}`;
+      nextBtn.style.display = 'none';
+    }
+
+    nextBtn.onclick = () => {
+      index = 0; score = 0; result.textContent = ''; nextBtn.style.display = 'inline';
+      showQuestion();
+    };
+
+    showQuestion();
+  </script>
+</body>
+</html>
